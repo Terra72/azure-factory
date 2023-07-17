@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "bobbidyfactory"
+		},
+		"FriezaDB_service_connectionString": {
+			"value": ""
+		},
+		"bulmadb_service_connectionString": {
+			"value": ""
+		},
+		"namekstore_service_accountKey": {
+			"value": ""
+		},
+		"piccolows_bulmadb_connectionString": {
+			"value": ""
+		},
+		"vegetaVM_server_password": {
+			"value": ""
+		},
+		"namekstore_service_properties_typeProperties_url": {
+			"value": "https://namekstore.dfs.core.windows.net/"
+		},
+		"vegetaVM_server_properties_typeProperties_host": {
+			"value": "D:\\nginx-1.24.0\\logs"
+		},
+		"vegetaVM_server_properties_typeProperties_userId": {
+			"value": "sqladmin"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
