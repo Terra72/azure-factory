@@ -1,0 +1,9 @@
+{
+	"name": "bobbidyfactory",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "9f8f1248-485a-4f2e-99ad-86481a433a70",
+		"tenantId": "b96059c3-e559-4b5d-a05c-1578d0d1701b"
+	}
+}

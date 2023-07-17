@@ -1,0 +1,6 @@
+{
+	"name": "vegetaruntime",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
