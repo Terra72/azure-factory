@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'vegetaVM_server'"
 		},
+		"bricksws_service_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0731-145610-ppenstj9"
+		},
 		"namekstore_service_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://namekstore.dfs.core.windows.net/"
@@ -78,6 +82,9 @@
 					"piccolows_bulmadb_connectionString": {
 						"value": "[parameters('piccolows_bulmadb_connectionString')]"
 					},
+					"bricksws_service_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('bricksws_service_properties_typeProperties_existingClusterId')]"
+					},
 					"namekstore_service_properties_typeProperties_url": {
 						"value": "[parameters('namekstore_service_properties_typeProperties_url')]"
 					}
@@ -112,6 +119,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'bobbidyfactory_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "bobbidyfactory_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'bobbidyfactory_ArmTemplate_1')]"
 			]
 		}
 	]

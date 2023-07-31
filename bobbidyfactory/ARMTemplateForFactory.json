@@ -27,6 +27,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'vegetaVM_server'"
 		},
+		"bricksws_service_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0731-145610-ppenstj9"
+		},
 		"namekstore_service_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://namekstore.dfs.core.windows.net/"
@@ -826,6 +830,43 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Databricks_pipe')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "RunNotebook",
+						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/dbowden72@gmail.com/DBZ workbook"
+						},
+						"linkedServiceName": {
+							"referenceName": "bricksws_service",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/bricksws_service')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/JSONarrays_pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1145,6 +1186,48 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/lookup_pipe')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LookupStoredProcedure",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SalesOrderHeader_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SalesOrderHeader_table')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/metadata-pipe')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1255,6 +1338,49 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/FileBinary')]",
 				"[concat(variables('factoryId'), '/datasets/nginxbinary')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stored_procedure_pipe')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[uspLogError]",
+							"storedProcedureParameters": {
+								"ErrorLogID": {
+									"value": "",
+									"type": "Int32"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "FriezaDB_service",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FriezaDB_service')]"
 			]
 		},
 		{
@@ -2459,6 +2585,22 @@
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
 					"connectionString": "[parameters('FriezaDB_service_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/bricksws_service')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-7917912830314937.17.azuredatabricks.net",
+					"authentication": "MSI",
+					"workspaceResourceId": "/subscriptions/e97edcf2-6904-4381-8aac-a0c9704f7b04/resourceGroups/data-grp/providers/Microsoft.Databricks/workspaces/bricksws",
+					"existingClusterId": "[parameters('bricksws_service_properties_typeProperties_existingClusterId')]"
 				}
 			},
 			"dependsOn": []

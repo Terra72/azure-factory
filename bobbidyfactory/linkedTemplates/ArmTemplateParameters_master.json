@@ -20,6 +20,9 @@
 		"vegetaVM_server_password": {
 			"value": ""
 		},
+		"bricksws_service_properties_typeProperties_existingClusterId": {
+			"value": "0731-145610-ppenstj9"
+		},
 		"namekstore_service_properties_typeProperties_url": {
 			"value": "https://namekstore.dfs.core.windows.net/"
 		},
